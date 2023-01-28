@@ -1,6 +1,6 @@
 # Overview on The Global Solution
 
-My architecture is inspired From https://github.com/jasontaylordev/CleanArchitecture (it is of of the most known architecture) which is based on CQRS and Mediator pattern.
+My architecture is inspired From https://github.com/jasontaylordev/CleanArchitecture (it is one of the most known architecture) which is based on CQRS and Mediator pattern.
 
 I added a security Level to secure the APIs using JWT Bearer Token Created Automatically From  the Authentication with Card Information.
 
