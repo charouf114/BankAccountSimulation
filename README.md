@@ -1,8 +1,3 @@
-# Overview on The Global Solution
-
-My architecture is inspired From https://github.com/jasontaylordev/CleanArchitecture (it is of of the most known architecture) which is based on CQRS.
-I added a security Level to secure the APIs using JWT created From Authentication with Card Information.
-
 # Bank Account Kata
 
 ## Directives
