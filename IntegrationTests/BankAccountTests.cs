@@ -2,6 +2,7 @@ using Application.Authentification.Commands.Authenticate;
 using Domain.Entities;
 using Domain.Enum;
 using Newtonsoft.Json;
+using System.Net;
 using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text;
@@ -29,6 +30,7 @@ namespace IntegrationTests
             // 11 -Try Withdrawal => Failed
             // 12 - Try Get Card History => Failed
             // 13- Try To re-authenticate With right Credential and expired card
+            //14- Test an API without token
 
             // 01 -  Create An Account + Card from DB Directly 
             Account account;
@@ -177,7 +179,7 @@ namespace IntegrationTests
             datalayer.SaveChanges();
 
             // 10 - Try Deposit => Failed 
-            result = await httpClient.WithDrawalMoney(token, new Domain.Dtos.TransactionInput()
+            result = await httpClient.DepositMoney(token, new Domain.Dtos.TransactionInput()
             {
                 Amount = 150m,
                 Currency = "EUR",
@@ -220,6 +222,11 @@ namespace IntegrationTests
 
             Assert.IsFalse(authenticateResponse.Success);
             Assert.AreEqual("Card Not Enabled", authenticateResponse.Message);
+
+            //14- Test an API without token
+            result = await httpClient.GetHistory("");
+            Assert.IsFalse(result.IsSuccessStatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
         }
     }
 }
