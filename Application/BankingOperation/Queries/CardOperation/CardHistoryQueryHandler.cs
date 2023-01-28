@@ -18,12 +18,12 @@ namespace Application.Authentification.Commands.Authenticate
         {
             if (_unitOfWork.Cards.GetCardById(request.CardId) is not Card card)
             {
-                return new CardHistoryResponse() { Success = false, Message = "Card Not Found" };
+                return new CardHistoryResponse() { IsSuccess = false, Message = "Card Not Found" };
             }
 
             if (card.GetCardStatus() != CardState.Enabled)
             {
-                return new CardHistoryResponse() { Success = false, Message = "Card Not Enabled" };
+                return new CardHistoryResponse() { IsSuccess = false, Message = "Card Not Enabled" };
             }
 
             var transactions = _unitOfWork.Transactions.GetTransactionByCardId(request.CardId);
@@ -31,8 +31,8 @@ namespace Application.Authentification.Commands.Authenticate
 
             return new CardHistoryResponse()
             {
-                Success = true,
-                Message = "Done",
+                IsSuccess = true,
+                Message = "Get Card Information Successfully Done",
                 Account = new Domain.Dtos.AccountDto(account),
                 Transactions = transactions.Select(t => new Domain.Dtos.TransactionDto(t)).OrderByDescending(t => t.CreationDate).ToList(),
 

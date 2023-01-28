@@ -18,17 +18,17 @@ namespace Application.Authentification.Commands.Authenticate
         {
             if (_unitOfWork.Cards.GetCardById(request.CardId) is not Card card)
             {
-                return new AddTransactionResponse() { Success = false, Message = "Card Not Found" };
+                return new AddTransactionResponse() { IsSuccess = false, Message = "Card Not Found" };
             }
 
             if (card.GetCardStatus() != CardState.Enabled)
             {
-                return new AddTransactionResponse() { Success = false, Message = "Card Not Enabled" };
+                return new AddTransactionResponse() { IsSuccess = false, Message = "Card Not Enabled" };
             }
 
             if (_unitOfWork.Accounts.GetAccountById(card.AccountId) is not Account account)
             {
-                return new AddTransactionResponse() { Success = false, Message = "Account Not Found" };
+                return new AddTransactionResponse() { IsSuccess = false, Message = "Account Not Found" };
             }
 
             var transaction = new CardTransaction()
@@ -57,7 +57,7 @@ namespace Application.Authentification.Commands.Authenticate
 
             return new AddTransactionResponse()
             {
-                Success = transaction.Status == TransactionState.Accepted,
+                IsSuccess = transaction.Status == TransactionState.Accepted,
                 Message = transaction.Status == TransactionState.Accepted ? "Transaction Added Sucessefully" : "Transaction Rejected"
             };
         }

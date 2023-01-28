@@ -22,12 +22,12 @@ namespace Application.Authentification.Commands.Authenticate
         {
             if (_cardRepository.GetCardByNumber(request.CardNumber) is not Card card)
             {
-                return new AuthenticateResponse() { Success = false, Message = "Card Not Found" };
+                return new AuthenticateResponse() { IsSuccess = false, Message = "Card Not Found" };
             }
 
             if (card.GetCardStatus() != Domain.Enum.CardState.Enabled)
             {
-                return new AuthenticateResponse() { Success = false, Message = "Card Not Enabled" };
+                return new AuthenticateResponse() { IsSuccess = false, Message = "Card Not Enabled" };
             }
 
             using (var hmac = new HMACSHA512(card.Salt))
@@ -37,14 +37,14 @@ namespace Application.Authentification.Commands.Authenticate
                 {
                     if (computedHash[i] != card.SecretCode[i])
                     {
-                        return new AuthenticateResponse() { Success = false, Message = "Wrong Code" };
+                        return new AuthenticateResponse() { IsSuccess = false, Message = "Wrong Code" };
                     }
                 }
             }
 
             return new AuthenticateResponse()
             {
-                Success = true,
+                IsSuccess = true,
                 AccessToken = _jwtTokenGenerator.GenerateToken(card),
                 Message = "Success Authentification"
             };

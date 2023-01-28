@@ -2,7 +2,7 @@
 {
     public record AuthenticateResponse
     {
-        public bool Success { get; set; }
+        public bool IsSuccess { get; set; }
 
         public string AccessToken { get; set; }
 

@@ -70,7 +70,7 @@ namespace IntegrationTests
             });
             var authenticateResponse = await result.Content.ReadFromJsonAsync<AuthenticateResponse>();
 
-            Assert.IsFalse(authenticateResponse.Success);
+            Assert.IsFalse(authenticateResponse.IsSuccess);
             Assert.AreEqual("Wrong Code", authenticateResponse.Message);
 
             // 01.2- Try To authenticate With right Credential and get Token
@@ -82,7 +82,7 @@ namespace IntegrationTests
 
             authenticateResponse = await result.Content.ReadFromJsonAsync<AuthenticateResponse>();
 
-            Assert.IsTrue(authenticateResponse.Success);
+            Assert.IsTrue(authenticateResponse.IsSuccess);
             Assert.IsNotEmpty(authenticateResponse.AccessToken);
             Assert.IsNotNull(authenticateResponse.AccessToken);
 
@@ -97,7 +97,7 @@ namespace IntegrationTests
             });
 
             var addTransactionResponse = await result.Content.ReadFromJsonAsync<AddTransactionResponse>();
-            Assert.IsTrue(addTransactionResponse.Success);
+            Assert.IsTrue(addTransactionResponse.IsSuccess);
             Assert.AreEqual("Transaction Added Sucessefully", addTransactionResponse.Message);
 
             // 03 -  Try to WithDrawal with Amount > Balance => Failed
@@ -109,7 +109,7 @@ namespace IntegrationTests
             });
 
             addTransactionResponse = await result.Content.ReadFromJsonAsync<AddTransactionResponse>();
-            Assert.IsFalse(addTransactionResponse.Success);
+            Assert.IsFalse(addTransactionResponse.IsSuccess);
             Assert.AreEqual("Transaction Rejected", addTransactionResponse.Message);
 
             // 04 - Deposit Money
@@ -121,7 +121,7 @@ namespace IntegrationTests
             });
 
             addTransactionResponse = await result.Content.ReadFromJsonAsync<AddTransactionResponse>();
-            Assert.IsTrue(addTransactionResponse.Success);
+            Assert.IsTrue(addTransactionResponse.IsSuccess);
             Assert.AreEqual("Transaction Added Sucessefully", addTransactionResponse.Message);
 
             // 05 - Try to WithDrawal with Amount < Balance => Success
@@ -133,7 +133,7 @@ namespace IntegrationTests
             });
 
             addTransactionResponse = await result.Content.ReadFromJsonAsync<AddTransactionResponse>();
-            Assert.IsTrue(addTransactionResponse.Success);
+            Assert.IsTrue(addTransactionResponse.IsSuccess);
             Assert.AreEqual("Transaction Added Sucessefully", addTransactionResponse.Message);
 
             // 06 - Try to WithDrawal with Amount > Balance => Failed
@@ -145,7 +145,7 @@ namespace IntegrationTests
             });
 
             addTransactionResponse = await result.Content.ReadFromJsonAsync<AddTransactionResponse>();
-            Assert.IsFalse(addTransactionResponse.Success);
+            Assert.IsFalse(addTransactionResponse.IsSuccess);
             Assert.AreEqual("Transaction Rejected", addTransactionResponse.Message);
 
             // 07 - Try to WithDrawal with Amount < Balance => Success
@@ -157,7 +157,7 @@ namespace IntegrationTests
             });
 
             addTransactionResponse = await result.Content.ReadFromJsonAsync<AddTransactionResponse>();
-            Assert.IsTrue(addTransactionResponse.Success);
+            Assert.IsTrue(addTransactionResponse.IsSuccess);
             Assert.AreEqual("Transaction Added Sucessefully", addTransactionResponse.Message);
 
             // 08 - Get Card History
@@ -167,11 +167,17 @@ namespace IntegrationTests
             var history = JsonConvert.DeserializeObject<CardHistoryResponse>(resultAsString);
             Assert.IsNotNull(history);
 
-            Assert.IsTrue(history.Success);
+            Assert.IsTrue(history.IsSuccess);
+            Assert.AreEqual("Get Card Information Successfully Done", history.Message);
+
             Assert.AreEqual(20m, history.Account.Balance);
             Assert.AreEqual(6, history.Transactions.Count);
+
             Assert.AreEqual(2, history.Transactions.Count(t => t.Status == TransactionState.Rejected));
             Assert.AreEqual(4, history.Transactions.Count(t => t.Status == TransactionState.Accepted));
+
+            Assert.AreEqual(2, history.Transactions.Count(t => t.TransactionType == TransactionType.Credit));
+            Assert.AreEqual(4, history.Transactions.Count(t => t.TransactionType == TransactionType.Debit));
 
             // 09 - Update The Card To Be Expired
             card.ExpirationDate = DateTime.UtcNow.AddDays(-1);
@@ -187,7 +193,7 @@ namespace IntegrationTests
             });
 
             addTransactionResponse = await result.Content.ReadFromJsonAsync<AddTransactionResponse>();
-            Assert.IsFalse(addTransactionResponse.Success);
+            Assert.IsFalse(addTransactionResponse.IsSuccess);
             Assert.AreEqual("Card Not Enabled", addTransactionResponse.Message);
 
             // 11 -Try Withdrawal => Failed
@@ -199,7 +205,7 @@ namespace IntegrationTests
             });
 
             addTransactionResponse = await result.Content.ReadFromJsonAsync<AddTransactionResponse>();
-            Assert.IsFalse(addTransactionResponse.Success);
+            Assert.IsFalse(addTransactionResponse.IsSuccess);
             Assert.AreEqual("Card Not Enabled", addTransactionResponse.Message);
 
             // 12 - Try Get Card History => Failed
@@ -208,7 +214,7 @@ namespace IntegrationTests
 
             history = JsonConvert.DeserializeObject<CardHistoryResponse>(resultAsString);
             Assert.IsNotNull(history);
-            Assert.IsFalse(history.Success);
+            Assert.IsFalse(history.IsSuccess);
             Assert.AreEqual("Card Not Enabled", history.Message);
 
             // 13- Try To re-authenticate With right Credential and expired card
@@ -220,7 +226,7 @@ namespace IntegrationTests
 
             authenticateResponse = await result.Content.ReadFromJsonAsync<AuthenticateResponse>();
 
-            Assert.IsFalse(authenticateResponse.Success);
+            Assert.IsFalse(authenticateResponse.IsSuccess);
             Assert.AreEqual("Card Not Enabled", authenticateResponse.Message);
 
             //14- Test an API without token
