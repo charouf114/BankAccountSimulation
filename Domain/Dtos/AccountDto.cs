@@ -9,6 +9,10 @@ namespace Domain.Dtos
         public string RIB { get; set; }
         public decimal Balance { get; set; }
 
+        public AccountDto()
+        {
+        }
+
         public AccountDto(Account account)
         {
             Owner = account.Owner;

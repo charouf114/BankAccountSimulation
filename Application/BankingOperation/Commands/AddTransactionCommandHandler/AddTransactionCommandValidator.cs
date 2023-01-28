@@ -8,7 +8,7 @@ namespace Application.Authentification.Commands.Authenticate
         {
             RuleFor(p => p.Amount).NotEmpty().NotNull();
             RuleFor(p => p.Currency).NotEmpty().NotNull();
-            RuleFor(p => p.TransactionType).NotEmpty().NotNull().IsInEnum();
+            RuleFor(p => p.TransactionType).IsInEnum();
             RuleFor(p => p.CardId).NotEmpty().NotNull();
         }
     }

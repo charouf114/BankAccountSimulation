@@ -17,6 +17,9 @@ namespace Domain.Dtos
 
         public TransactionState Status { get; set; }
 
+        public TransactionDto()
+        {
+        }
 
         // May Be AutoMapper In the Future
         public TransactionDto(CardTransaction cardTransaction)

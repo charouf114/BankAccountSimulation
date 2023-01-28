@@ -8,7 +8,7 @@ namespace Domain.Entities
 
         public Guid AccountId { get; set; }
 
-        public string OwnerName { get; set; }
+        public string Owner { get; set; }
 
         public string CardNumber { get; set; }
 

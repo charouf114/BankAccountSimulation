@@ -42,7 +42,7 @@ namespace Application.Authentification.Commands.Authenticate
                 Status = TransactionState.Accepted
             };
 
-            if (request.TransactionType == TransactionType.Debit && account.Balance < request.Amount)
+            if (request.TransactionType == TransactionType.Debit && account.Balance < Math.Abs(request.Amount))
             {
                 transaction.Status = TransactionState.Rejected;
             }

@@ -11,3 +11,5 @@
 /Application/bin/Debug
 /Infrastructure/bin/Debug
 /BankAccount/.vs
+/IntegrationTests/bin
+/IntegrationTests/obj

@@ -34,7 +34,7 @@ namespace Application.Authentification.Commands.Authenticate
                 Success = true,
                 Message = "Done",
                 Account = new Domain.Dtos.AccountDto(account),
-                Transactions = transactions.Select(t => new Domain.Dtos.TransactionDto(t)).ToList(),
+                Transactions = transactions.Select(t => new Domain.Dtos.TransactionDto(t)).OrderByDescending(t => t.CreationDate).ToList(),
 
             };
         }
