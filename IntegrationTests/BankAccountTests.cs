@@ -58,9 +58,9 @@ namespace IntegrationTests
                     Salt = hmac.Key,
                 };
 
-                datalayer.Accounts.Add(account);
-                datalayer.Cards.Add(card);
-                datalayer.SaveChanges();
+                dbcontext.Accounts.Add(account);
+                dbcontext.Cards.Add(card);
+                dbcontext.SaveChanges();
             }
             // 01.1- Try To authenticate With Wrong Credential
             var result = await httpClient.Authenticate(new AuthenticateCommand()
@@ -181,8 +181,8 @@ namespace IntegrationTests
 
             // 09 - Update The Card To Be Expired
             card.ExpirationDate = DateTime.UtcNow.AddDays(-1);
-            datalayer.Cards.Update(card);
-            datalayer.SaveChanges();
+            dbcontext.Cards.Update(card);
+            dbcontext.SaveChanges();
 
             // 10 - Try Deposit => Failed 
             result = await httpClient.DepositMoney(token, new Domain.Dtos.TransactionInput()

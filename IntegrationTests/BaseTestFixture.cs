@@ -10,7 +10,7 @@ public abstract class BaseTestFixture
 
     private static CustomWebApplicationFactory _factory;
 
-    protected static ApplicationDBContext datalayer { get; set; }
+    protected static ApplicationDBContext dbcontext { get; set; }
 
     protected static HttpClient httpClient { get; set; }
 
@@ -23,7 +23,7 @@ public abstract class BaseTestFixture
 
         serviceScope = _scopeFactory.CreateScope();
 
-        datalayer = GetRequiredService<ApplicationDBContext>();
+        dbcontext = GetRequiredService<ApplicationDBContext>();
 
         httpClient = _factory.Server.CreateClient();
     }
