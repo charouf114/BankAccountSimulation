@@ -5,7 +5,6 @@ namespace BankAccount.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize]
     public class BaseApiController : ControllerBase
     {
         private IMediator _mediator = null!;
